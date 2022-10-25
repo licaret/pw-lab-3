@@ -26,22 +26,26 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function Posts() {
+export default function Posts({ title, content }) {
     const [expanded, setExpanded] = React.useState(false);
+    const titleFirstWords = title.split(" ").splice(0, 2);
+    const avatar = titleFirstWords.length > 1 
+        ? (titleFirstWords[0][0] + titleFirstWords[1][0]).toUpperCase() 
+        : titleFirstWords[0][0].toUpperCase();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
-        <Card sx={{ maxWidth: 345, margin: 2 }}>
+        <Card sx={{ minWidth: 345, maxWidth: 345, margin: 2 }}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        UA
+                        {avatar}
                     </Avatar>
                 }
-                title="Post Title"
+                title={title}
                 subheader="September 14, 2016"
             />
             <CardMedia
@@ -52,10 +56,7 @@ export default function Posts() {
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nullam ultrices lacinia vehicula.
-                    In vel feugiat nibh.
-                    Suspendisse faucibus, magna vitae fermentum pulvinar, elit sapien elementum turpis, at pretium leo enim quis purus.
+                    {content}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
