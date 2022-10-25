@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, CircularProgress } from '@mui/material';
 import Posts from './components/Posts';
 
 const initialData = [
@@ -19,15 +19,28 @@ const initialData = [
 ];
 
 function App() {
-	const [data, setData] = useState(initialData);
+	const [data, setData] = useState([]);
 	const [newPostTitle, setNewPostTitle] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setData(initialData);
+			setIsLoading(false);
+		}, 2000);
+	}, []);
 
 	const addNewPost = () => {
-		setData([...data, {
-			title: newPostTitle,
-			content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ultrices lacinia vehicula. In vel feugiat nibh. Suspendisse faucibus, magna vitae fermentum pulvinar, elit sapien elementum turpis, at pretium leo enim quis purus.`
-		}]);
-		setNewPostTitle("");
+		if (newPostTitle && newPostTitle.length > 0) {
+			setData([...data, {
+				title: newPostTitle,
+				content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ultrices lacinia vehicula. In vel feugiat nibh. Suspendisse faucibus, magna vitae fermentum pulvinar, elit sapien elementum turpis, at pretium leo enim quis purus.`
+			}]);
+			setNewPostTitle("");
+		}
+		else {
+			alert("Post title should not be empty!");
+		}
 	}
 
 	return (
@@ -53,7 +66,7 @@ function App() {
 					</Button>
 				</div>
 
-				<Posts data={data} />
+				{isLoading ? <CircularProgress /> : <Posts data={data} />}
 			</div>
 		</div>
 	);
